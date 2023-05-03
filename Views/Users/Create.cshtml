@@ -1,0 +1,74 @@
+﻿@model Test.Models.UserEntity
+
+@{
+    ViewData["Title"] = "Create";
+}
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger" id="myModal">
+        <button type="button" class="close" id="closeButton" data-dismiss="alert">&times;</button>
+        @TempData["ErrorMessage"]
+    </div>
+}
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var closeButton = document.getElementById("closeButton");
+        var modal = document.getElementById("myModal");
+
+        closeButton.addEventListener('click', function () {
+            modal.style.display = "none";
+        });
+    });
+</script>
+
+<h1>Create</h1>
+
+<h4>UserEntity</h4>
+<hr />
+
+<div class="row">
+    <div class="col-md-4">
+            <form asp-action="Create" method="post">
+           
+            <div class="form-group">
+                <label asp-for="Login" class="control-label"></label>
+                <input asp-for="Login" class="form-control" />
+                <span asp-validation-for="Login" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Password" class="control-label"></label>
+                <input asp-for="Password" class="form-control" />
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="FirstName" class="control-label"></label>
+                <input asp-for="FirstName" class="form-control" />
+                <span asp-validation-for="FirstName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="LastName" class="control-label"></label>
+                <input asp-for="LastName" class="form-control" />
+                <span asp-validation-for="LastName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DateOfBirth" class="control-label"></label>
+                <input asp-for="DateOfBirth" class="form-control" />
+                <span asp-validation-for="DateOfBirth" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Gender" class="control-label"></label>
+                <input asp-for="Gender" class="form-control" />
+                <span asp-validation-for="Gender" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary">Create</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+

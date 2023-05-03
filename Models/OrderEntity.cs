@@ -10,7 +10,7 @@ namespace Test.Models
         public int OrderID { get; set; }
         public int UserId { get; set; }
         public DateTime? OrderDate { get; set; }
-        [Column(TypeName = "money")]
+        [Column(TypeName = "decimal(18,2)")]
         public decimal? OrderCost { get; set; }
         public string? ItemsDecription { get; set; }
         public string? ShipingAddress { get; set; }
@@ -18,6 +18,6 @@ namespace Test.Models
 
 
         [ForeignKey("UserId")]
-        public virtual UserEntity User { get; set; }
+        public virtual UserEntity? User { get; set; }
     }
 }

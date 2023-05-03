@@ -1,6 +1,8 @@
-﻿using ServiceStack.DataAnnotations;
+﻿using Microsoft.AspNetCore.Mvc.ModelBinding;
+using ServiceStack.DataAnnotations;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using RequiredAttribute = ServiceStack.DataAnnotations.RequiredAttribute;
 
 namespace Test.Models
 {
@@ -9,9 +11,9 @@ namespace Test.Models
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int UserId { get; set; }
-
+        
+        [Required]
         [Column(TypeName = "varchar(20)")]
-        [Unique]
         public string Login { get; set; }
 
         [Column(TypeName = "varchar(20)")]
@@ -22,12 +24,12 @@ namespace Test.Models
 
         [Column(TypeName = "varchar(20)")]
         public string? LastName { get; set; }
-        
-        [Column(TypeName = "DATE")]
+
         public DateTime? DateOfBirth { get; set; }
 
         public char? Gender { get; set; }
 
-        public virtual ICollection<OrderEntity> Orders { get; set; }
+        [BindNever]
+        public virtual ICollection<OrderEntity>? Orders { get; set; }
     }
 }
