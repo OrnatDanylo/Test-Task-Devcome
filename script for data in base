@@ -1,0 +1,15 @@
+INSERT INTO Users (Login, Password, FirstName, LastName, DateOfBirth, Gender) 
+VALUES 
+('user1', 'pass1', 'John', 'Doe', '1990-01-01', 'M'),
+('user2', 'pass2', 'Jane', 'Doe', '1992-03-15', 'F'),
+('user3', 'pass3', 'Michael', 'Smith', '1985-07-22', 'M'),
+('user4', 'pass4', 'Emily', 'Johnson', '1998-11-10', 'F'),
+('user5', 'pass5', 'William', 'Brown', '1994-05-06', 'M');
+
+
+INSERT INTO Orders (UserID, OrderDate, OrderCost, ItemsDescription, ShippingAddress)
+VALUES 
+(1, '2023-05-04 13:30:00', 100.00, 'Item 1, Item 2', '123 Main St, Anytown, USA'),
+(1, '2023-05-05 10:00:00', 50.00, 'Item 3', '456 Maple Ave, Anytown, USA'),
+(2, '2023-05-06 15:45:00', 75.25, 'Item 4, Item 5, Item 6', '789 Oak Rd, Anytown, USA'),
+(3, '2023-05-07 09:15:00', 20.50, 'Item 7', '321 Elm St, Anytown, USA');
