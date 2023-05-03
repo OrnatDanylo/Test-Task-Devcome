@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity.SqlServer;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -7,6 +8,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Task.Data;
 using Test.Models;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace TestTask.Controllers
 {
@@ -59,19 +61,8 @@ namespace TestTask.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("OrderID,UserId,OrderDate,OrderCost,ItemsDecription,ShipingAddress")] OrderEntity orderEntity)
         {
-            var errors = ModelState.Where(x => x.Value.Errors.Any())
-            .Select(x => new { x.Key, x.Value.Errors })
-            .ToArray();
-
-            foreach (var error in errors)
-            {
-                var fieldName = error.Key;
-                var validationErrors = error.Errors.Select(e => e.ErrorMessage);
-                var errorMessage = string.Join(" ", validationErrors);
-                // Вивести повідомлення про помилку
-                Console.WriteLine($"Поле {fieldName}: {errorMessage}");
-            }
-            if (ModelState.IsValid)
+            bool check = DayOrderCheck(orderEntity.OrderDate);
+            if (ModelState.IsValid && check)
             {
                 _context.Add(orderEntity);
                 await _context.SaveChangesAsync();
@@ -105,12 +96,10 @@ namespace TestTask.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("OrderID,UserId,OrderDate,OrderCost,ItemsDecription,ShipingAddress")] OrderEntity orderEntity)
         {
-            if (id != orderEntity.OrderID)
-            {
-                return NotFound();
-            }
+            orderEntity.OrderID = id;
 
-            if (ModelState.IsValid)
+            bool check = DayOrderCheck(orderEntity.OrderDate);
+            if (ModelState.IsValid && check)
             {
                 try
                 {
@@ -175,6 +164,19 @@ namespace TestTask.Controllers
         private bool OrderEntityExists(int id)
         {
           return (_context.Orders?.Any(e => e.OrderID == id)).GetValueOrDefault();
+        }
+        
+        private bool DayOrderCheck(DateTime? dateTime) 
+        {
+            DateTime date = new DateTime();
+            if (dateTime.HasValue) { date = ((DateTime)dateTime).Date; } else { return true; };
+
+            var isExists = _context.Orders
+                                        .Where(o => o.OrderDate >= date && o.OrderDate <= date.AddDays(1))
+                                        .Take(1)
+                                        .ToList();
+
+            return !isExists.Any();
         }
     }
 }
