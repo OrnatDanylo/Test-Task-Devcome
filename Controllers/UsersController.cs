@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -61,9 +62,18 @@ namespace TestTask.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Add(userEntity);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                try
+                {
+                    _context.Add(userEntity);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
+                }
+                catch (DbUpdateException ex) 
+                {
+                    TempData["ErrorMessage"] = "Помилка! Уже існує таки користувач.";
+                    Console.WriteLine("Не вдалося додати користувача до бази даних. " + ex);
+                    return View(userEntity);
+                }
             }
 
             return View(userEntity);
@@ -111,6 +121,12 @@ namespace TestTask.Controllers
                     {
                         throw;
                     }
+                }
+                catch (DbUpdateException ex)
+                {
+                    TempData["ErrorMessage"] = "Помилка! Уже існує таки користувач.";
+                    Console.WriteLine("Не вдалося додати користувача до бази даних. " + ex);
+                    return View(userEntity);
                 }
                 return RedirectToAction(nameof(Index));
             }
