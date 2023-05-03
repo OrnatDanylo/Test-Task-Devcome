@@ -175,6 +175,10 @@ namespace TestTask.Controllers
                                         .Where(o => o.OrderDate >= date && o.OrderDate <= date.AddDays(1))
                                         .Take(1)
                                         .ToList();
+            if (isExists.Any())
+            {
+                TempData["ErrorMessage"] = "Помилка! Для користувача доступно лише одне замовлення на день";
+            }
 
             return !isExists.Any();
         }

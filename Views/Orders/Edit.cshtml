@@ -4,6 +4,25 @@
     ViewData["Title"] = "Edit";
 }
 
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger" id="myModal">
+        <button type="button" class="close" id="closeButton" data-dismiss="alert">&times;</button>
+        @TempData["ErrorMessage"]
+    </div>
+}
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var closeButton = document.getElementById("closeButton");
+        var modal = document.getElementById("myModal");
+
+        closeButton.addEventListener('click', function () {
+            modal.style.display = "none";
+        });
+    });
+</script>
+
+
 <h1>Edit</h1>
 
 <h4>OrderEntity</h4>

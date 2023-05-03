@@ -23,9 +23,9 @@ namespace TestTask.Controllers
         // GET: Users
         public async Task<IActionResult> Index()
         {
-              return _context.Users != null ? 
-                          View(await _context.Users.ToListAsync()) :
-                          Problem("Entity set 'AppDbContext.Users'  is null.");
+            return _context.Users != null ?
+                        View(await _context.Users.ToListAsync()) :
+                        Problem("Entity set 'AppDbContext.Users'  is null.");
         }
 
         // GET: Users/Details/5
@@ -65,7 +65,7 @@ namespace TestTask.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-           
+
             return View(userEntity);
         }
 
@@ -145,18 +145,33 @@ namespace TestTask.Controllers
                 return Problem("Entity set 'AppDbContext.Users'  is null.");
             }
             var userEntity = await _context.Users.FindAsync(id);
-            if (userEntity != null)
+            if (userEntity != null && UserOrderExistCheck(id))
             {
                 _context.Users.Remove(userEntity);
             }
-            
+   
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool UserEntityExists(int id)
         {
-          return (_context.Users?.Any(e => e.UserId == id)).GetValueOrDefault();
+            return (_context.Users?.Any(e => e.UserId == id)).GetValueOrDefault();
+        }
+
+        private bool UserOrderExistCheck(int id) 
+        {
+            var isExists = _context.Orders
+                                        .Where(o => o.UserId == id)
+                                        .Take(1)
+                                        .ToList();
+            if(isExists.Any()) { 
+                TempData["ErrorMessage"] = "Помилка! У юзера існують замовлення."; 
+            }
+           
+
+            return !isExists.Any();
         }
     }
 }
