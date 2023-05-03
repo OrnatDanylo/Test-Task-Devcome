@@ -48,5 +48,7 @@ Fields
     ItemsDescription  VARCHAR(1000)
     ShippingAddress  VARCHAR(1000) 
 
+To fill database use sql scripts from "script for data in base"
+
 
 To stars just compile the project
