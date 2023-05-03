@@ -2,6 +2,7 @@
 using ServiceStack.DataAnnotations;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using RequiredAttribute = ServiceStack.DataAnnotations.RequiredAttribute;
 
 namespace Test.Models
 {
@@ -10,9 +11,9 @@ namespace Test.Models
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int UserId { get; set; }
-
+        
+        [Required]
         [Column(TypeName = "varchar(20)")]
-        [Unique]
         public string Login { get; set; }
 
         [Column(TypeName = "varchar(20)")]

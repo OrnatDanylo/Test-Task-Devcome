@@ -9,6 +9,13 @@ namespace Task.Data
         {
         }
 
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            builder.Entity<UserEntity>()
+                .HasIndex(u => u.Login)
+                .IsUnique();
+        }
+
         public DbSet<UserEntity> Users { get; set; }
         public DbSet<OrderEntity> Orders { get; set; }
     }
